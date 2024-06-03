@@ -14,7 +14,7 @@ terraform {
     resource_group_name  = "teraform-statefile"
     storage_account_name = "terraformstatefiletd"
     container_name       = "terraform-statefiles"
-    key                  = "miralabs.terraform.tfstate"
+    key                  = "demo.terraform.tfstate"
   }
 }
 
