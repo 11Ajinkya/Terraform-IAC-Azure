@@ -1,3 +1,4 @@
+## Resource Group ##
 variable "resource_group_name" {
   description = "Name of the Azure resource group"
   type        = string
@@ -10,7 +11,7 @@ variable "location" {
   # default     = "centralindia"
 }
 
-#AKS_cluster
+## AKS_cluster ##
 variable "cluster" {
   type        = string
   description = "cluster name in Azure"
@@ -43,7 +44,7 @@ variable "namespace" {
 }
 
 
-#web-app &service plan
+## Web-app &service plan ##
 variable "os_type" {
   type        = string
   description = "App Service Plan name in Azure"
@@ -70,7 +71,7 @@ variable "app_service_plan_name" {
   description = "App Service Plan name in Azure"
 }
 
-#ACR
+## ACR ##
 variable "sku_acr" {
   type        = string
   description = "ACR name in Azure"
@@ -81,7 +82,7 @@ variable "acr_name" {
   description = "ACR name in Azure"
 }
 
-#Application_insights
+## Application_insights ##
 variable "log_analytics_workspace" {
   type        = string
   description = "RG location in Azure"
@@ -97,7 +98,7 @@ variable "application_insights_name" {
   description = "RG location in Azure"
 }
 
-#azure_cosmosdb_postgres_cluster
+## Azure_cosmosdb_postgres_cluster ##
 variable "azurerm_cosmosdb_postgresql_cluster_name" {
   description = "Name of the Azure resource group"
   type        = string
@@ -123,7 +124,7 @@ variable "node_count" {
   type        = string
 }
 
-#storage_account_with_container
+## Storage_Account_with_Container ##
 variable "storage_account_name" {
   type        = string
   description = "App Service Plan name in Azure"
@@ -149,7 +150,7 @@ variable "container_access_type" {
   description = "App Service Plan name in Azure"
 }
 
-#azure_cache_for_redis
+## Azure_cache_for_redis ##
 variable "redis_cache_name" {
   type        = string
   description = "App Service Plan name in Azure"
@@ -180,7 +181,7 @@ variable "minimum_tls_version" {
   description = "App Service Plan name in Azure"
 }
 
-#azure_communication_service
+## Azure_communication_service ##
 variable "azurerm_communication_service_name" {
   description = "Name of the azurerm_communication_service_name"
   type        = string
@@ -191,7 +192,7 @@ variable "data_location_acs" {
   type        = string
 }
 
-#azure_communication_service
+## Azure_Communication_service ##
 variable "email_communication_service_name" {
   description = "Name of the email_communication_service_name"
   type        = string
@@ -202,33 +203,7 @@ variable "data_location_ecs" {
   type        = string
 }
 
-# #azure_AI_hub
-# variable "cognitive_account_name" {
-#   description = "Name of the cognitive_account_name"
-#   type        = string
-# }
-
-# variable "kind_ai_hub" {
-#   description = "Name of the kind_ai_hub"
-#   type        = string
-# }
-
-# variable "sku_name_ai_hub" {
-#   description = "Name of thesku_name_ai_hub"
-#   type        = string
-# }
-
-# variable "node_storage_quota_in_mb" {
-#   description = "Name of the Azure resource group"
-#   type        = string
-# }
-
-# variable "node_vcores" {
-#   description = "Name of the Azure resource group"
-#   type        = string
-# }
-
-#  postgres_db  #
+##  Postgres_db  ##
 variable "postgresql_server" {
   type        = string
   description = "cluster name in Azure"
@@ -293,3 +268,29 @@ variable "collation" {
   type        = string
   description = "cluster name in Azure"
 }
+
+# ## Azure_AI_hub ##
+# variable "cognitive_account_name" {
+#   description = "Name of the cognitive_account_name"
+#   type        = string
+# }
+
+# variable "kind_ai_hub" {
+#   description = "Name of the kind_ai_hub"
+#   type        = string
+# }
+
+# variable "sku_name_ai_hub" {
+#   description = "Name of thesku_name_ai_hub"
+#   type        = string
+# }
+
+# variable "node_storage_quota_in_mb" {
+#   description = "Name of the Azure resource group"
+#   type        = string
+# }
+
+# variable "node_vcores" {
+#   description = "Name of the Azure resource group"
+#   type        = string
+# }

@@ -1,3 +1,4 @@
+## Providers ##
 terraform {
   required_providers {
     kubernetes = {
@@ -10,10 +11,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "teraform-statefile"     # Can be passed via `-backend-config=`"resource_group_name=<resource group name>"` in the `init` command.
-    storage_account_name = "terraformstatefildemo"  # Can be passed via `-backend-config=`"storage_account_name=<storage account name>"` in the `init` command.
-    container_name       = "terraform-test-ctr"     # Can be passed via `-backend-config=`"container_name=<container name>"` in the `init` command.
-    key                  = "demo.terraform.tfstate" # Can be passed via `-backend-config=`"key=<blob key name>"` in the `init` command.
+    resource_group_name  = "teraform-statefile"
+    storage_account_name = "terraformstatefiletd"
+    container_name       = "terraform-statefiles"
+    key                  = "miralabs.terraform.tfstate"
   }
 }
 
@@ -21,7 +22,15 @@ provider "azurerm" {
   features {}
 }
 
+provider "kubernetes" {
+  host                   = module.cluster.kube_config[0].host
+  client_certificate     = base64decode(module.cluster.kube_config[0].client_certificate)
+  client_key             = base64decode(module.cluster.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(module.cluster.kube_config[0].cluster_ca_certificate)
+}
 
+
+## Modules ##
 module "resource_group" {
   source              = "../resources/resource_group"
   resource_group_name = var.resource_group_name
@@ -39,19 +48,7 @@ module "cluster" {
   vm_size_aks             = var.vm_size_aks
   namespace    = var.namespace
   
-  providers = {
-    azurerm    = azurerm
-    kubernetes = kubernetes
-  }
-  
   depends_on = [module.resource_group]
-}
-
-provider "kubernetes" {
-  host                   = module.cluster.kube_config[0].host
-  client_certificate     = base64decode(module.cluster.kube_config[0].client_certificate)
-  client_key             = base64decode(module.cluster.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(module.cluster.kube_config[0].cluster_ca_certificate)
 }
 
 module "web_app" {
@@ -88,49 +85,49 @@ module "application_insights" {
   depends_on = [module.resource_group]
 }
 
-# module "azure_cosmosdb_postgres_cluster" {
-#   source = "../resources/az_cosmosdb_postgres_cluster"
-#   resource_group_name                      = module.resource_group.resource_group_name
-#   location                                 = module.resource_group.resource_group_location
-#   azurerm_cosmosdb_postgresql_cluster_name = var.azurerm_cosmosdb_postgresql_cluster_name
-#   administrator_login_password             = var.administrator_login_password
-#   coordinator_storage_quota_in_mb          = var.coordinator_storage_quota_in_mb
-#   coordinator_vcore_count                  = var.coordinator_vcore_count
-#   node_count                               = var.node_count
+module "azure_cosmosdb_postgres_cluster" {
+  source                                   = "../resources/az_cosmosdb_postgres_cluster"
+  resource_group_name                      = module.resource_group.resource_group_name
+  location                                 = module.resource_group.resource_group_location
+  azurerm_cosmosdb_postgresql_cluster_name = var.azurerm_cosmosdb_postgresql_cluster_name
+  administrator_login_password             = var.administrator_login_password
+  coordinator_storage_quota_in_mb          = var.coordinator_storage_quota_in_mb
+  coordinator_vcore_count                  = var.coordinator_vcore_count
+  node_count                               = var.node_count
 
-#   depends_on = [module.resource_group]
-# }
+  depends_on = [module.resource_group]
+}
 
-# module "azurerm_storage_account" {
-#   source = "../resources/storage_ac_container"
-#   resource_group_name       = module.resource_group.resource_group_name
-#   location                  = module.resource_group.resource_group_location
-#   storage_account_name      = var.storage_account_name
-#   account_tier              = var.account_tier
-#   account_replication_type  = var.account_replication_type
-#   storage_container_name    = var.storage_container_name
-#   container_access_type     = var.container_access_type
+module "azurerm_storage_account" {
+  source                    = "../resources/storage_ac_container"
+  resource_group_name       = module.resource_group.resource_group_name
+  location                  = module.resource_group.resource_group_location
+  storage_account_name      = var.storage_account_name
+  account_tier              = var.account_tier
+  account_replication_type  = var.account_replication_type
+  storage_container_name    = var.storage_container_name
+  container_access_type     = var.container_access_type
 
-#   depends_on = [module.resource_group]
-# }
+  depends_on = [module.resource_group]
+}
 
-# module "azure_cache_for_redis" {
-#   source = "../resources/cache_redis"
-#   resource_group_name   = module.resource_group.resource_group_name
-#   location              = module.resource_group.resource_group_location
-#   redis_cache_name      = var.redis_cache_name
-#   capacity_cache        = var.capacity_cache
-#   family                = var.family
-#   sku_name_cache        = var.sku_name_cache
-#   enable_non_ssl_port   = var.enable_non_ssl_port
-#   minimum_tls_version   = var.minimum_tls_version
+module "azure_cache_for_redis" {
+  source                = "../resources/cache_redis"
+  resource_group_name   = module.resource_group.resource_group_name
+  location              = module.resource_group.resource_group_location
+  redis_cache_name      = var.redis_cache_name
+  capacity_cache        = var.capacity_cache
+  family                = var.family
+  sku_name_cache        = var.sku_name_cache
+  enable_non_ssl_port   = var.enable_non_ssl_port
+  minimum_tls_version   = var.minimum_tls_version
 
-#   depends_on = [module.resource_group]
-# }
+  depends_on = [module.resource_group]
+}
 
 #azure_communication_service
 module "azure_communication_service" {
-  source = "../resources/communication_srv"
+  source                              = "../resources/communication_srv"
   resource_group_name                 = module.resource_group.resource_group_name
   azurerm_communication_service_name  = var.azurerm_communication_service_name
   data_location_acs                   = var.data_location_acs
@@ -140,7 +137,7 @@ module "azure_communication_service" {
 
 #email_communication_service
 module "email_communication_service" {
-  source = "../resources/email_communication_srv"
+  source                            = "../resources/email_communication_srv"
   resource_group_name               = module.resource_group.resource_group_name
   email_communication_service_name  = var.email_communication_service_name
   data_location_ecs                 = var.data_location_ecs
@@ -148,24 +145,13 @@ module "email_communication_service" {
   depends_on = [module.resource_group]
 }
 
-# # # module "azure_AI_hub" {
-# # #   source = "../resources/azure_ai_hub"
-# # #   resource_group_name       = module.resource_group.resource_group_name
-# # #   location                  = module.resource_group.resource_group_location
-# # #   cognitive_account_name    = var.cognitive_account_name
-# # #   kind_ai_hub               = var.kind_ai_hub
-# # #   sku_name_ai_hub           = var.sku_name_ai_hub
-
-# # #   depends_on = [module.resource_group]
-# # # }
-
 # #postgres_db
 # module "postgres_db" {
 #   source = "../resources/postgres-db"
 #   resource_group_name                      = module.resource_group.resource_group_name
 #   location                                 = module.resource_group.resource_group_location
 #   postgresql_server   = var.postgresql_server
-#   sku_name_pg_db    = var.sku_name_pg_db
+#   sku_name_pg_db     = var.sku_name_pg_db
 #   storage_mb_pg = var.storage_mb_pg
 #   backup_retention_days = var.backup_retention_days
 #   geo_redundant_backup_enabled_pg = var.geo_redundant_backup_enabled_pg
@@ -180,3 +166,14 @@ module "email_communication_service" {
 
 #   depends_on = [module.resource_group]
 # }
+
+# # # module "azure_AI_hub" {
+# # #   source = "../resources/azure_ai_hub"
+# # #   resource_group_name       = module.resource_group.resource_group_name
+# # #   location                  = module.resource_group.resource_group_location
+# # #   cognitive_account_name    = var.cognitive_account_name
+# # #   kind_ai_hub               = var.kind_ai_hub
+# # #   sku_name_ai_hub           = var.sku_name_ai_hub
+
+# # #   depends_on = [module.resource_group]
+# # # }
