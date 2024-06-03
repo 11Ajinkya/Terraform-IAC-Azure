@@ -1,5 +1,5 @@
 ##  resource_group  ##
-resource_group_name  = "prod-demo"
+resource_group_name  = "-prod-demo"
 location             = "East US"
 
 ##  AKS_cluster  ##
@@ -9,23 +9,23 @@ default_node_pool_name  = "default"
 nodepool_count_aks      = "2"
 vm_size_aks             = "Standard_B2s_v2"
 
-namespace               = "demo-ns"
+namespace               = "-demo-ns"
 
 ##  ACR (Azure container registry)  ##
 acr_name  = "acrtf"
 sku_acr   = "Basic"
 
 ##  Web-app & service_plan  ##
-web_app_name            = "prod-fe"
+web_app_name            = "-prod-fe"
 node_version_web_app    = "18-lts"  
 app_service_plan_name   = "ASP-prod-9cf8"
 os_type                 = "Linux"
 sku_name_service_plan   = "B1"
 
 ##  Application_Insights  ##
-log_analytics_workspace   = "log-analytics-workspace-demo-tf"
+log_analytics_workspace   = "-log-analytics-workspace-demo-tf"
 retention_in_days         = "30"
-application_insights_name = "prod-tf-appinsights"
+application_insights_name = "-prod-tf-appinsights"
 
 ##  Azure_Cosmos_DB_Postgres_Cluster  ##
 azurerm_cosmosdb_postgresql_cluster_name = "proddbcluster"
