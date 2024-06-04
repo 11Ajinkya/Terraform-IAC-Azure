@@ -13,3 +13,7 @@ spec:
         ingress:
           class: nginx
       selector: {}
+
+
+
+      ################ demo protection ############
