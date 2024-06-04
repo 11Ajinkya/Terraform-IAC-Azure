@@ -24,3 +24,18 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager-demo-tf
 
 # Apply cluster issuer YAML
 kubectl apply -f cluster-issuer.yml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################### demo prtection ###################333
