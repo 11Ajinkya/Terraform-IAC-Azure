@@ -1,9 +1,9 @@
 name: 'Terraform Azure Deployment'
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - development
 
 jobs:
   terraform:
@@ -25,8 +25,8 @@ jobs:
           terraform_version: 1.0.11
 
       - name: Terraform Init
-        run: terraform init
-        working-directory: ./modules/
+        run: terraform init 
+        working-directory: ./
         env:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -35,11 +35,11 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: ./modules/
+        working-directory: ./
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
-        working-directory: ./modules/
+        run: terraform plan -var-file=prod.tfvars -out=tfplan
+        working-directory: ./
         env:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -47,15 +47,14 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve tfplan #terraform apply -var-file="prod.tfvars"#
-        working-directory: ./modules/
+        if: github.ref == 'refs/heads/development'
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./
         env:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-
 
 # ##{{ Note:- "IF you want to Destroy all Resources then uncomment below code" }}###
 

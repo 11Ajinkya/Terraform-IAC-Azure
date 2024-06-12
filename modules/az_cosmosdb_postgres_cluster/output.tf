@@ -2,7 +2,6 @@ output "Cosmos_DB_postgres_Name" {
   value = azurerm_cosmosdb_postgresql_cluster.prod.name
 }
 
-
 output "Cosmos_DB_postgres_Storage_MB" {
   value = azurerm_cosmosdb_postgresql_cluster.prod.coordinator_storage_quota_in_mb
 }

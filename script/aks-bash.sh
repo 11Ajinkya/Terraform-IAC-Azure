@@ -3,7 +3,7 @@ Write-Host "Setting Azure subscription..."
 az account set --subscription 999b83ca-672c-408d-86f7-fef298206376
 
 # Get AKS cluster credentials
-az aks get-credentials --resource-group prod-demo --name cluster --overwrite-existing
+az aks get-credentials --resource-group mira-prod-demo --name miracluster --overwrite-existing
 
 # Create namespaces
 kubectl create namespace cert-manager-demo-tf

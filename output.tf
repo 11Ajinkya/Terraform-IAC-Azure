@@ -10,6 +10,7 @@ output "resource_group_location" {
 ## AKS Cluster ##
 output "kubernetes_cluster_name" {
   value = module.cluster.kubernetes_cluster_name
+  sensitive = true  
 }
 
 output "namespace_name" {
@@ -91,8 +92,8 @@ output "Storage_Account_Name" {
   value = module.azurerm_storage_account.Storage_Account_Name
 }
 
-output "Storage_ac_Container_Name" {
-  value = module.azurerm_storage_account.Storage_ac_Container_Name
+output "storage_share_name" {
+  value = module.azurerm_storage_account.storage_share_name
 }
 
 ## Az Cache for Redis ##
